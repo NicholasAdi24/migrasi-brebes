@@ -1,0 +1,2 @@
+touch storage/app/public/.gitkeep
+touch storage/app/template/.gitkeep
