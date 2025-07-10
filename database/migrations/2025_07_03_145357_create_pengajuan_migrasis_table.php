@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('nama_perusahaan');
             $table->string('surat_penawaran_kerja');
             $table->enum('status', ['menunggu pengecekan', 'menunggu persetujuan', 'disetujui', 'ditolak'])->default('menunggu pengecekan');
-            $table->string('surat_pdf')->nullable()->after('status');
+            $table->string('surat_pdf')->nullable();
             $table->timestamps();
         });
     }
