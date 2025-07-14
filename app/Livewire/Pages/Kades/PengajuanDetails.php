@@ -40,8 +40,8 @@ class PengajuanDetails extends Component
 
     // Format tanggal
     $tanggalNow = \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y');
-    $tanggalLahir = \Carbon\Carbon::parse($pengajuan->tanggal_lahir)->translatedFormat('d F Y');
-    $tanggalLahirRelasi = \Carbon\Carbon::parse($pengajuan->tanggal_lahir_relasi)->translatedFormat('d F Y');
+    $tanggalLahir = \Carbon\Carbon::parse($pengajuan->tanggal_lahir)->locale('id')->translatedFormat('d F Y');
+    $tanggalLahirRelasi = \Carbon\Carbon::parse($pengajuan->tanggal_lahir_relasi)->locale('id')->translatedFormat('d F Y');
 
     // Mulai FPDI
     $pdf = new Fpdi();
@@ -54,52 +54,52 @@ class PengajuanDetails extends Component
     $pdf->SetFont('Times', '', 12);
 
     // Tulis data di posisi (x, y) sesuai lokasi kolom isian di template PDF kamu
-    $pdf->SetXY(79, 80);  // Nama Relasi
+    $pdf->SetXY(79, 78.5);  // Nama Relasi
     $pdf->Write(0, $pengajuan->nama_relasi);
 
-    $pdf->SetXY(79, 86);  // Tempat/Tgl Lahir Relasi
+    $pdf->SetXY(79, 84.5);  // Tempat/Tgl Lahir Relasi
     $pdf->Write(0, $pengajuan->tempat_lahir_relasi . ', ' . $tanggalLahirRelasi);
 
-    $pdf->SetXY(79, 92);  // NIK Relasi
+    $pdf->SetXY(79, 90);  // NIK Relasi
     $pdf->Write(0, $pengajuan->nik_relasi);
 
-    $pdf->SetXY(79, 98);  // Alamat Relasi
+    $pdf->SetXY(79, 96);  // Alamat Relasi
     $pdf->Write(0, $pengajuan->alamat_relasi);
 
-    $pdf->SetXY(160, 108);  // kerabat
+    $pdf->SetXY(160, 105);  // kerabat
     $pdf->Write(0, $pengajuan->kerabat);
 
-    $pdf->SetXY(70, 113.5);  // relasi
+    $pdf->SetXY(70, 110);  // relasi
     $pdf->Write(0, $pengajuan->relasi);
 
-    $pdf->SetXY(79, 121);  // nama user
+    $pdf->SetXY(79, 118);  // nama user
     $pdf->Write(0, $pengajuan->nama);
     
-    $pdf->SetXY(79, 127);  // Tempat/Tanggal Lahir user
+    $pdf->SetXY(79, 123.5);  // Tempat/Tanggal Lahir user
     $pdf->Write(0, $pengajuan->tempat_lahir . ', ' . $tanggalLahir);
 
-    $pdf->SetXY(79, 133);  // NIK
+    $pdf->SetXY(79, 129);  // NIK
     $pdf->Write(0, $pengajuan->nik);
 
-    $pdf->SetXY(79, 139);  // Jenis kelamin
+    $pdf->SetXY(79, 134.5);  // Jenis kelamin
     $pdf->Write(0, ucfirst($pengajuan->jenis_kelamin));
 
-    $pdf->SetXY(79, 145);  // Status perkawinan
+    $pdf->SetXY(79, 140.5);  // Status perkawinan
     $pdf->Write(0, ucfirst($pengajuan->status_perkawinan));
 
-    $pdf->SetXY(79, 151);  // Alamat KTP
+    $pdf->SetXY(79, 146.5);  // Alamat KTP
     $pdf->Write(0, $pengajuan->alamat_ktp);
 
-    $pdf->SetXY(60, 161);  // nama_perusahaan, tempat_tujuan, negara_tujuan
+    $pdf->SetXY(60, 155);  // nama_perusahaan, tempat_tujuan, negara_tujuan
     $pdf->Write(0, $pengajuan->nama_perusahaan . ', ' . $pengajuan->tempat_tujuan . ', ' . $pengajuan->negara_tujuan);
 
-    $pdf->SetXY(120, 185);  // Tanggal surat
+    $pdf->SetXY(120, 179);  // Tanggal surat
     $pdf->Write(0, 'Prapag Lor, ' . $tanggalNow);
 
-    $pdf->SetXY(40, 216);  // Nama user (yang diberi izin)
+    $pdf->SetXY(40, 209);  // Nama user (yang diberi izin)
     $pdf->Write(0, $pengajuan->nama);
 
-    $pdf->SetXY(120, 216);  // Nama relasi (yang memberi izin)
+    $pdf->SetXY(120, 209);  // Nama relasi (yang memberi izin)
     $pdf->Write(0, $pengajuan->nama_relasi);
 
     // Simpan PDF

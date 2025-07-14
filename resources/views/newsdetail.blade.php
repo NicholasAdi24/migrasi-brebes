@@ -17,16 +17,10 @@
 <body>
   <nav id="main-nav">
     <div class="container">
-      <img src="img/logo.png" alt="NewsMedia" class="logo">
-      <div class='social'>
-        <a href="http://facebook.com.br" target='blank'><i class="fab fa-facebook fa-2x"></i></a>
-        <a href="http://twitter.com.br" target='blank'><i class="fab fa-twitter fa-2x"></i></a>
-        <a href="http://instagram.com.br" target='blank'><i class="fab fa-instagram fa-2x"></i></a>
-        <a href="http://youtube.com.br" target='blank'><i class="fab fa-youtube fa-2x"></i></a>
-      </div>
+      <a href="#" class="logo">Desa Prapag Lor</a>
+
       <ul>
-        <li><a href="index.html" class="current">Home</a></li>
-        <li><a href="about.html">About</a></li>
+        <li><a href="/" class="current">Back to Home</a></li>
       </ul>
     </div>
   </nav>
@@ -43,12 +37,11 @@
                 <small>
                 <i class="fas fa-user"></i> Ditulis oleh Admin. {{ $berita->created_at->format('d M Y') }}
                 </small>
-                <div class="category category-news">{{ $berita->kategori ?? 'Berita' }}</div>
             </div>
-            <p>{!! $berita->konten !!}</p>
+            <p>{!! $berita->isi !!}</p>
             </article>
 
-        <aside class="card bg-secondary">
+        <!-- <aside class="card bg-secondary">
           <h2>Join Our Club</h2>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore, nulla!</p>
           <a href="#" class='btn btn-dak btn-block'>Join Now</a>
@@ -61,42 +54,22 @@
             <li><a href="#"><i class="fas fa-chevron-right"></i>Technology</a></li>
             <li><a href="#"><i class="fas fa-chevron-right"></i>Fashion</a></li>
           </ul>
-        </aside>
+        </aside> -->
       </div>
     </div>
   </section>
   
-  <footer id = 'main-footer' class = 'py-2'>
+  <footer id='main-footer'>
     <div class="container footer-container">
       <div>
-        <img src="img/logo_light.png" alt="logo">
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Praesentium quod ratione veniam sit harum excepturi sed quos dignissimos maxime consequatur.</p>
+        <br>
+        <img src="{{ asset('assets/images/logo.png') }}" alt="logo">
+        <p>Pusat Berita Desa Prapag Lor, Brebes, Jawa Tengah</p>
       </div>
-      <div>
-        <h3>Email Newsletter</h3>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        <form>
-          <input type="email" placeholder="Email:" required>
-          <input type="submit" value="Subscribe" class = 'btn btn-primary'>
-        </form>
-      </div>
-      <div>
-        <h3>Site Links</h3>
-        <ul class = 'list'>
-          <li><a href="#">Help and Support</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-      </div>
-      <div>
-        <h2>Join our Club</h2>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis, provident.</p>
-        <a href="#" class="btn btn-secondary">Join Now</a>
-      </div>
+      
       <div>
         <p>
-          Copyright NewsGrid &copy; 2019, All Rights reserved. 
+          Desa Prapag Lor &copy; {{ date('Y') }}, All Rights reserved. 
         </p>
       </div>
     </div>

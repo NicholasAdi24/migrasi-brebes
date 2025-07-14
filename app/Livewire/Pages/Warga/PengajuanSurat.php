@@ -8,11 +8,12 @@ use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Http;
 
 #[Layout('layouts.warga')]
 class PengajuanSurat extends Component
 {
-    use WithFileUploads;
+   use WithFileUploads;
     public $nama;
     public $tempat_lahir;
     public $tanggal_lahir;
@@ -26,6 +27,80 @@ class PengajuanSurat extends Component
     public $tujuan_keluar_negeri;
     public $pengalaman_kerja, $pengelolaan_upah, $keinginan_kembali;
     public $kerabat, $relasi,$nama_relasi, $tempat_lahir_relasi, $tanggal_lahir_relasi, $nik_relasi, $alamat_relasi;
+
+
+    public $negaraList = [];
+    public $kotaList = [];
+    public $tempat_tujuan_manual = '';
+    
+
+
+    protected $listeners = ['negaraUpdated' => 'getKotaList'];
+
+
+    public function mount()
+    {
+        $this->getNegaraList();
+    }
+    public function updatedNegaraTujuan($value)
+    {
+        logger("✅ Negara dipilih: $value");
+        $this->tempat_tujuan = '';
+        $this->getKotaList($value);
+    }
+
+        public function getNegaraList()
+        {
+            $response = Http::get('https://restcountries.com/v3.1/all?fields=name,cca2');
+
+            if ($response->successful()) {
+                $this->negaraList = collect($response->json())
+                    ->mapWithKeys(function ($country) {
+                        return [$country['cca2'] => $country['name']['common']];
+                    })
+                    ->sort()
+                    ->toArray();
+            }
+        }
+
+
+
+public function getKotaList($countryCode)
+{
+    logger("📄 Ambil kota dari file lokal untuk: $countryCode");
+
+    $path = resource_path('data/kota-negara.json'); // ✅ FIXED di sini
+
+    if (!file_exists($path)) {
+        logger()->error('❌ File JSON tidak ditemukan.');
+        $this->kotaList = [];
+        return;
+    }
+
+    $json = file_get_contents($path);
+    $data = collect(json_decode($json, true)); // ubah ke array associative
+
+    $filtered = $data->where('iso2', $countryCode)->pluck('city')->unique()->sort()->values();
+    $this->kotaList = $filtered->toArray();
+
+    logger("✅ Kota ditemukan dari file lokal: " . count($this->kotaList));
+}
+
+public function getKotaListManual()
+{
+    if (!$this->negara_tujuan) {
+        $this->addError('negara_tujuan', 'Silakan pilih negara terlebih dahulu.');
+        return;
+    }
+
+    $this->getKotaList($this->negara_tujuan); // gunakan method yang sudah ada
+}
+
+
+
+
+
+
 
 
 public function submit()
@@ -56,6 +131,8 @@ public function submit()
 
     $fotoPath = $this->foto_diri->store('foto_diri', 'public');
     $suratPath = $this->surat_penawaran_kerja->store('surat_penawaran', 'public');
+    $negaraNama = $this->negaraList[$this->negara_tujuan] ?? $this->negara_tujuan;
+
 
     PengajuanMigrasi::create([
         'user_id' => auth()->id(),
@@ -65,8 +142,8 @@ public function submit()
         'tanggal_lahir' => $this->tanggal_lahir,
         'alamat_ktp' => $this->alamat_ktp,
         'foto_diri' => $fotoPath,
-        'negara_tujuan' => $this->negara_tujuan,
-        'tempat_tujuan' => $this->tempat_tujuan,
+        'negara_tujuan' => $negaraNama,
+        'tempat_tujuan' => $this->tempat_tujuan ?: $this->tempat_tujuan_manual,
         'nama_perusahaan' => $this->nama_perusahaan,
         'surat_penawaran_kerja' => $suratPath,
         'jenis_kelamin' => $this->jenis_kelamin,
@@ -86,6 +163,15 @@ public function submit()
 
         'status' => 'menunggu pengecekan',
     ]);
+
+    if (!$this->tempat_tujuan && !$this->tempat_tujuan_manual) {
+    $this->addError('tempat_tujuan', 'Pilih salah satu kota atau ketik kota secara manual.');
+    }
+
+    if ($this->tempat_tujuan && $this->tempat_tujuan_manual) {
+        $this->addError('tempat_tujuan', 'Hanya boleh memilih salah satu: dropdown atau input manual.');
+    }
+
     $this->dispatch('form-success'); // ✅ BENAR untuk Livewire v3.6.3
 
     session()->flash('success', 'Pengajuan berhasil dikirim.');
@@ -93,8 +179,11 @@ public function submit()
 }
 
 
+
+
     public function render()
     {
+
         return view('livewire.pages.warga.pengajuan-surat');
     }
 }

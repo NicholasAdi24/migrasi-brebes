@@ -21,6 +21,11 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+# Include specific storage subfolders
 !/storage/app/public/
+!/storage/app/public/**
 !/storage/app/template/
+!/storage/app/template/**
+!/storage/app/kota-negara.json
+
 

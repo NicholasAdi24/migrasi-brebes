@@ -48,9 +48,7 @@
               <img src="{{ asset('storage/' . $berita->gambar) }}" alt="photo">
             @endif
             <div>
-              <div class="category category-news">
-                {{ $berita->kategori ?? 'Berita' }}
-              </div>
+
               <h3>
                 <a href="{{ route('beritadetail', $berita->id) }}">{{ $berita->judul }}</a>
               </h3>
@@ -67,7 +65,7 @@
       <div>
         <br>
         <img src="images/logo.png" alt="logo">
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Praesentium quod ratione veniam sit harum excepturi sed quos dignissimos maxime consequatur.</p>
+        <p>Pusat Berita Desa Prapag Lor, Brebes, Jawa Tengah</p>
       </div>
       
       <div>

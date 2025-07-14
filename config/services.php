@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'geodb' => [
+    'key' => env('GEODB_API_KEY'),
+    'host' => 'wft-geo-db.p.rapidapi.com',
+],
+
 ];

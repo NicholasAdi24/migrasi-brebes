@@ -5,8 +5,12 @@
 
       <form wire:submit.prevent="submit" enctype="multipart/form-data" class="form-grid">
 
+        <h3 class="text-xl font-semibold mb-2">Data Pemohon</h3>
+
+        <hr class="my-6 border-gray-300">
+
         <div class="full">
-          <label>Nama</label>
+          <label>Nama Lengkap (Sesuai KTP)</label>
           <input type="text" wire:model="nama" class="form-input" />
           @error('nama') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
@@ -67,21 +71,22 @@
 
         <div>
             <label>Kerabat</label>
-            <input type="text" wire:model="kerabat" class="form-input" placeholder="Contoh: Istri, Suami, Anak, Orang Tua" />
+            <input type="text" wire:model="kerabat" class="form-input" placeholder="Contoh: Istri, Suami, Orang Tua" />
             @error('kerabat') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
 
         <div>
             <label>Relasi pemohon dengan kerabat</label>
-            <input type="text" wire:model="relasi" class="form-input" placeholder="Contoh: Anak dari Ibu" />
+            <input type="text" wire:model="relasi" class="form-input" placeholder="Contoh: Suami, Istri, Anak " />
             @error('relasi') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
 
         <div>
-            <label>Nama (Kerabat)</label>
+            <label>Nama Lengkap (Kerabat)</label>
             <input type="text" wire:model="nama_relasi" class="form-input"/>
             @error('nama_relasi') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
+
 
         <div>
             <label>Tempat Lahir (Kerabat)</label>
@@ -113,8 +118,6 @@
 
         <hr class="my-6 border-gray-300">
 
-        
-
 
         <div>
           <label>Status PMI</label>
@@ -133,16 +136,40 @@
         </div>
 
         <div>
-          <label>Negara Tujuan</label>
-          <input type="text" wire:model="negara_tujuan" class="form-input" />
+          <label for="negara">Negara Tujuan</label>
+          <select wire:model="negara_tujuan" class="form-select">
+            <option value="">-- Pilih Negara --</option>
+            @foreach ($negaraList as $code => $negara)
+              <option value="{{ $code }}">{{ $negara }}</option>
+            @endforeach
+          </select>
           @error('negara_tujuan') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
 
-        <div>
-          <label>Kota Tempat Tujuan</label>
-          <input type="text" wire:model="tempat_tujuan" class="form-input" />
+        <div class="mt-2">
+          <button type="button" wire:click="getKotaListManual" class="bg-indigo-600 text-white px-3 py-1 rounded">
+            Cari Kota
+          </button>
+          <p class="text-sm text-gray-500 mt-1">Klik tombol cari kota di atas bila daftar kota tempat tujuan belum muncul</p>
+        </div>
+
+        <div class="mt-4">
+          <label for="tempat_tujuan">Kota Tempat Tujuan</label>
+          <select wire:model="tempat_tujuan" class="form-select" @if ($tempat_tujuan_manual) disabled @endif>
+            <option value="">-- Pilih Kota --</option>
+            @foreach ($kotaList as $kota)
+              <option value="{{ $kota }}">{{ $kota }}</option>
+            @endforeach
+          </select>
           @error('tempat_tujuan') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
+
+        <div class="mt-4">
+          <label for="tempat_tujuan_manual">Kota Tujuan (Lainnya)</label>
+          <input type="text" wire:model="tempat_tujuan_manual" class="form-input" @if ($tempat_tujuan) disabled @endif placeholder="Ketik nama kota jika tidak tersedia di daftar.">
+          @error('tempat_tujuan_manual') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        </div>
+
 
         <div>
           <label>Nama Perusahaan</label>
@@ -166,7 +193,11 @@
         </div>
         <div class="full">
           <label>Ingin Kembali ke Luar Negeri?</label>
-          <input type="text" wire:model="keinginan_kembali" class="form-input" />
+            <select wire:model="keinginan_kembali" class="form-select">
+            <option value="">--Pilih--</option>
+            <option value="Ya">Ya</option>
+            <option value="Tidak">Tidak</option>
+          </select>
         </div>
         @endif
 

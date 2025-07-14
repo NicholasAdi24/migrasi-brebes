@@ -1,2 +1,2 @@
-touch storage/app/public/.gitkeep
 touch storage/app/template/.gitkeep
+touch storage/app/public/.gitkeep
